@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Локальная PAPER-песочница Market Sentinel RU для тестового портфеля российских акций.">
+  <meta name="theme-color" content="#101813">
+  <meta property="og:title" content="Market Sentinel RU — PAPER портфель">
+  <meta property="og:description" content="Соберите портфель. Проверьте идею.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://logosito.github.io/traderu-site/">
+  <meta property="og:image" content="https://logosito.github.io/traderu-site/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Market Sentinel RU — PAPER портфель</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Market Sentinel RU, на главную">
+      <span class="brand-mark">MS</span>
+      <span>Market Sentinel <b>RU</b></span>
+    </a>
+    <div class="mode"><span></span>PAPER ONLY</div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Локальная инвестиционная лаборатория</p>
+        <h1>Соберите портфель.<br><em>Проверьте идею.</em></h1>
+        <p class="lede">Российские акции, комиссии и переоценка — без регистрации, брокерского счёта и риска отправить реальную заявку.</p>
+      </div>
+      <div class="hero-note">
+        <span>Данные</span>
+        <strong>Только на этом устройстве</strong>
+        <small>Портфель хранится в браузере и никуда не передаётся.</small>
+      </div>
+    </section>
+
+    <section class="summary" aria-label="Сводка портфеля">
+      <article><span>Капитал</span><strong id="initialValue">—</strong><small>стартовая сумма</small></article>
+      <article><span>Свободные деньги</span><strong id="cashValue">—</strong><small id="cashHint">для новых идей</small></article>
+      <article><span>Стоимость позиций</span><strong id="marketValue">—</strong><small id="positionsHint">—</small></article>
+      <article class="pnl-card"><span>Общий P&amp;L</span><strong id="pnlValue">—</strong><small id="pnlPercent">—</small></article>
+    </section>
+
+    <section class="workspace">
+      <aside class="panel form-panel">
+        <div class="panel-head">
+          <div><p class="kicker">Новая позиция</p><h2>Добавить бумагу</h2></div>
+          <button class="text-button" id="demoButton" type="button">Демо</button>
+        </div>
+
+        <form id="positionForm">
+          <div class="field wide">
+            <label for="ticker">Тикер MOEX</label>
+            <input id="ticker" name="ticker" required maxlength="12" autocomplete="off" placeholder="SBER">
+          </div>
+          <div class="field">
+            <label for="lots">Количество лотов</label>
+            <input id="lots" name="lots" required type="number" min="1" step="1" value="1">
+          </div>
+          <div class="field">
+            <label for="lotSize">Бумаг в лоте</label>
+            <input id="lotSize" name="lotSize" required type="number" min="1" step="1" value="10">
+          </div>
+          <div class="field">
+            <label for="buyPrice">Цена покупки, ₽</label>
+            <input id="buyPrice" name="buyPrice" required inputmode="decimal" placeholder="320,50">
+          </div>
+          <div class="field">
+            <label for="currentPrice">Текущая цена, ₽</label>
+            <input id="currentPrice" name="currentPrice" required inputmode="decimal" placeholder="325,10">
+          </div>
+          <div class="field wide">
+            <label for="commission">Комиссия сделки, ₽</label>
+            <input id="commission" name="commission" required inputmode="decimal" value="0">
+          </div>
+          <p class="form-error" id="formError" role="alert"></p>
+          <button class="primary" type="submit">Добавить в портфель <span>→</span></button>
+        </form>
+
+        <div class="capital-setting">
+          <label for="initialCapital">Начальный капитал</label>
+          <div><input id="initialCapital" inputmode="decimal" aria-describedby="capitalHelp"><span>₽</span></div>
+          <small id="capitalHelp">Меняется без перезагрузки страницы</small>
+        </div>
+      </aside>
+
+      <section class="panel portfolio-panel">
+        <div class="panel-head">
+          <div><p class="kicker">Мой PAPER-портфель</p><h2>Позиции</h2></div>
+          <button class="text-button danger" id="clearButton" type="button">Очистить</button>
+        </div>
+
+        <div class="portfolio-empty" id="emptyState" hidden>
+          <span>＋</span><h3>Портфель пока пуст</h3><p>Добавьте первую бумагу или загрузите демо.</p>
+        </div>
+
+        <div class="table-wrap" id="tableWrap">
+          <table>
+            <thead><tr><th>Бумага</th><th>Позиция</th><th>Средняя</th><th>Сейчас</th><th>Стоимость</th><th>P&amp;L</th><th></th></tr></thead>
+            <tbody id="positionsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="allocation" id="allocation">
+          <div class="donut" id="donut"><span id="donutCount">0</span><small>бумаг</small></div>
+          <div class="allocation-list" id="allocationList"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="principles">
+      <article><span>01</span><h3>Безопасно по умолчанию</h3><p>Нет broker API, секретов и маршрута реальной заявки.</p></article>
+      <article><span>02</span><h3>Комиссии учтены</h3><p>P&amp;L считается после затрат на виртуальную покупку.</p></article>
+      <article><span>03</span><h3>Данные ваши</h3><p>Состояние остаётся в локальном хранилище браузера.</p></article>
+    </section>
+  </main>
+
+  <footer><span>Market Sentinel RU</span><p>Учебная PAPER-среда. Не является инвестиционной рекомендацией.</p><span id="year"></span></footer>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
