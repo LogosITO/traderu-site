@@ -36,20 +36,28 @@ function tableRow(table) {
 
 async function fetchQuote(ticker) {
   const fields = 'iss.meta=off&iss.only=securities,marketdata&securities.columns=SECID,SHORTNAME,LOTSIZE&marketdata.columns=SECID,LAST,MARKETPRICE,LCLOSEPRICE';
-  const response = await fetch(`${ISS}/${ticker}.json?${fields}`, { signal:AbortSignal.timeout(15_000) });
-  if (!response.ok) throw new Error(`MOEX: ${response.status}`);
-  const data = await response.json();
-  const security = tableRow(data.securities), market = tableRow(data.marketdata);
-  const price = market?.LAST ?? market?.MARKETPRICE ?? market?.LCLOSEPRICE;
-  if (!security || !Number.isFinite(price) || price <= 0) return null;
-  return { ticker, name:security.SHORTNAME || ticker, lotSize:security.LOTSIZE, price:Math.round(price * 100) };
+  const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const response = await fetch(`${ISS}/${ticker}.json?${fields}`, { signal:controller.signal });
+    if (!response.ok) throw new Error(`MOEX: ${response.status}`);
+    const data = await response.json();
+    const security = tableRow(data.securities), market = tableRow(data.marketdata);
+    const price = market?.LAST ?? market?.MARKETPRICE ?? market?.LCLOSEPRICE;
+    if (!security || !Number.isFinite(price) || price <= 0) return null;
+    return { ticker, name:security.SHORTNAME || ticker, lotSize:security.LOTSIZE, price:Math.round(price * 100) };
+  } finally { clearTimeout(timeout); }
 }
 
 async function fetchQuotes() {
+  try {
+    const response = await fetch(`quotes.json?v=${Date.now()}`, { cache:'no-store' });
+    const published = response.ok ? await response.json() : null;
+    if (published?.quotes?.length >= 2) return published;
+  } catch (_) { /* direct MOEX is the fallback */ }
   const results = await Promise.allSettled(UNIVERSE.map(fetchQuote));
   const quotes = results.flatMap(result => result.status === 'fulfilled' && result.value ? [result.value] : []);
   if (quotes.length < 2) throw new Error('MOEX сейчас не отвечает. Попробуйте ещё раз позже.');
-  return quotes;
+  return { updatedAt:new Date().toISOString(), quotes };
 }
 
 function render() {
@@ -80,11 +88,11 @@ async function refresh() {
   if (!state) return;
   setBusy(true, 'Получаем свежие цены…');
   try {
-    const quotes = await fetchQuotes();
+    const feed = await fetchQuotes(), quotes = feed.quotes;
     const byTicker = new Map(quotes.map(quote => [quote.ticker, quote]));
     state.positions = state.positions.map(item => ({ ...item, currentPrice:byTicker.get(item.ticker)?.price ?? item.currentPrice }));
-    state.updatedAt = new Date().toISOString(); save(); render();
-    $('quoteStatus').textContent = 'Котировки MOEX обновлены';
+    state.updatedAt = feed.updatedAt; save(); render();
+    $('quoteStatus').textContent = `Котировки MOEX от ${formatDate(feed.updatedAt)}`;
   } catch (error) { $('quoteStatus').textContent = error.message; }
   finally { setBusy(false); }
 }
@@ -101,9 +109,10 @@ $('botForm').addEventListener('submit', async event => {
   try {
     const budget = parseMoney($('budget').value), commissionBps = parsePercent($('commission').value);
     setBusy(true); $('startButton').firstChild.textContent = 'Получаем цены… ';
-    const quotes = await fetchQuotes();
-    state = buildPaperPortfolio(quotes, budget, commissionBps); save(); render();
-    $('quoteStatus').textContent = 'Портфель собран по котировкам MOEX';
+    const feed = await fetchQuotes();
+    state = buildPaperPortfolio(feed.quotes, budget, commissionBps);
+    state.updatedAt = feed.updatedAt; save(); render();
+    $('quoteStatus').textContent = `Портфель собран по котировкам от ${formatDate(feed.updatedAt)}`;
     $('portfolio').scrollIntoView({ behavior:'smooth', block:'start' });
   } catch (error) { $('setupMessage').textContent = error.message; }
   finally { setBusy(false); $('startButton').firstChild.textContent = 'Собрать портфель '; }

@@ -1,0 +1,41 @@
+{
+  "updatedAt": "2026-08-04T10:19:28.647Z",
+  "quotes": [
+    {
+      "ticker": "SBER",
+      "name": "Сбербанк",
+      "lotSize": 1,
+      "price": 28389
+    },
+    {
+      "ticker": "LKOH",
+      "name": "ЛУКОЙЛ",
+      "lotSize": 1,
+      "price": 460050
+    },
+    {
+      "ticker": "GAZP",
+      "name": "ГАЗПРОМ ао",
+      "lotSize": 10,
+      "price": 9262
+    },
+    {
+      "ticker": "YDEX",
+      "name": "ЯНДЕКС",
+      "lotSize": 1,
+      "price": 395950
+    },
+    {
+      "ticker": "NVTK",
+      "name": "Новатэк ао",
+      "lotSize": 1,
+      "price": 101910
+    },
+    {
+      "ticker": "ROSN",
+      "name": "Роснефть",
+      "lotSize": 1,
+      "price": 34735
+    }
+  ]
+}
