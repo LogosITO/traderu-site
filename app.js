@@ -1,4 +1,4 @@
-import { buildPaperPortfolio, parseMoney, parsePercent, positionCost, positionMarket, positionPnl, selectStrategy, STRATEGIES, totals } from './portfolio.mjs';
+import { buildPaperPortfolio, parseMoney, parsePercent, positionCost, positionMarket, positionPnl, selectStrategy, STRATEGIES, totals } from './portfolio.mjs?v=3';
 
 const STORAGE_KEY = 'market-sentinel-bot-v2';
 const rub = new Intl.NumberFormat('ru-RU', { style:'currency', currency:'RUB', maximumFractionDigits:2 });
