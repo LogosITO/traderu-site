@@ -1,8 +1,6 @@
-import { buildPaperPortfolio, parseMoney, parsePercent, positionCost, positionMarket, positionPnl, totals } from './portfolio.mjs';
+import { buildPaperPortfolio, parseMoney, parsePercent, positionCost, positionMarket, positionPnl, selectStrategy, STRATEGIES, totals } from './portfolio.mjs';
 
 const STORAGE_KEY = 'market-sentinel-bot-v2';
-const UNIVERSE = ['SBER', 'LKOH', 'GAZP', 'YDEX', 'NVTK', 'ROSN'];
-const ISS = 'https://iss.moex.com/iss/engines/stock/markets/shares/boards/TQBR/securities';
 const rub = new Intl.NumberFormat('ru-RU', { style:'currency', currency:'RUB', maximumFractionDigits:2 });
 const pct = new Intl.NumberFormat('ru-RU', { style:'percent', signDisplay:'exceptZero', maximumFractionDigits:2 });
 const $ = id => document.getElementById(id);
@@ -29,35 +27,11 @@ function tone(value) { return value > 0 ? 'positive' : value < 0 ? 'negative' : 
 function formatDate(value) { return new Intl.DateTimeFormat('ru-RU', { dateStyle:'medium', timeStyle:'short' }).format(new Date(value)); }
 function escapeHtml(value) { return String(value).replace(/[&<>'"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'})[char]); }
 
-function tableRow(table) {
-  if (!table?.data?.length) return null;
-  return Object.fromEntries(table.columns.map((column, index) => [column, table.data[0][index]]));
-}
-
-async function fetchQuote(ticker) {
-  const fields = 'iss.meta=off&iss.only=securities,marketdata&securities.columns=SECID,SHORTNAME,LOTSIZE&marketdata.columns=SECID,LAST,MARKETPRICE,LCLOSEPRICE';
-  const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 15_000);
-  try {
-    const response = await fetch(`${ISS}/${ticker}.json?${fields}`, { signal:controller.signal });
-    if (!response.ok) throw new Error(`MOEX: ${response.status}`);
-    const data = await response.json();
-    const security = tableRow(data.securities), market = tableRow(data.marketdata);
-    const price = market?.LAST ?? market?.MARKETPRICE ?? market?.LCLOSEPRICE;
-    if (!security || !Number.isFinite(price) || price <= 0) return null;
-    return { ticker, name:security.SHORTNAME || ticker, lotSize:security.LOTSIZE, price:Math.round(price * 100) };
-  } finally { clearTimeout(timeout); }
-}
-
 async function fetchQuotes() {
-  try {
-    const response = await fetch(`quotes.json?v=${Date.now()}`, { cache:'no-store' });
-    const published = response.ok ? await response.json() : null;
-    if (published?.quotes?.length >= 2) return published;
-  } catch (_) { /* direct MOEX is the fallback */ }
-  const results = await Promise.allSettled(UNIVERSE.map(fetchQuote));
-  const quotes = results.flatMap(result => result.status === 'fulfilled' && result.value ? [result.value] : []);
-  if (quotes.length < 2) throw new Error('MOEX сейчас не отвечает. Попробуйте ещё раз позже.');
-  return { updatedAt:new Date().toISOString(), quotes };
+  const response = await fetch(`quotes.json?v=${Date.now()}`, { cache:'no-store' });
+  const published = response.ok ? await response.json() : null;
+  if (published?.quotes?.length >= 8) return published;
+  throw new Error('Котировки обновляются. Попробуйте ещё раз через несколько минут.');
 }
 
 function render() {
@@ -71,6 +45,7 @@ function render() {
   $('pnlValue').className = tone(total.pnl);
   $('pnlPercent').textContent = pct.format(total.pnl / state.budget);
   $('portfolioDate').textContent = `Портфель собран ${formatDate(state.createdAt)}`;
+  $('strategyName').textContent = STRATEGIES[state.strategy] || 'Ранее собранный портфель';
   $('updatedAt').textContent = `Обновлено ${formatDate(state.updatedAt)}`;
   $('positions').innerHTML = state.positions.map(item => {
     const pnl = positionPnl(item);
@@ -109,8 +84,9 @@ $('botForm').addEventListener('submit', async event => {
   try {
     const budget = parseMoney($('budget').value), commissionBps = parsePercent($('commission').value);
     setBusy(true); $('startButton').firstChild.textContent = 'Получаем цены… ';
-    const feed = await fetchQuotes();
-    state = buildPaperPortfolio(feed.quotes, budget, commissionBps);
+    const feed = await fetchQuotes(), strategy = $('strategy').value;
+    state = buildPaperPortfolio(selectStrategy(feed.quotes, strategy), budget, commissionBps);
+    state.strategy = strategy;
     state.updatedAt = feed.updatedAt; save(); render();
     $('quoteStatus').textContent = `Портфель собран по котировкам от ${formatDate(feed.updatedAt)}`;
     $('portfolio').scrollIntoView({ behavior:'smooth', block:'start' });

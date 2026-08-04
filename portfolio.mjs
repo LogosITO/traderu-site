@@ -31,6 +31,25 @@ export function totals(state) {
   return { market, equity, pnl: equity - state.budget };
 }
 
+export const STRATEGIES = {
+  balanced: 'Баланс — разные отрасли',
+  liquid: 'Ликвидность — самые торгуемые',
+  momentum: 'Импульс — лидеры дня'
+};
+
+export function selectStrategy(quotes, strategy, count = 8) {
+  if (!STRATEGIES[strategy]) throw new Error('Неизвестная стратегия');
+  const liquid = quotes.filter(quote => Number.isFinite(quote.liquidity) && quote.liquidity > 0);
+  const byLiquidity = [...liquid].sort((a, b) => b.liquidity - a.liquidity);
+  if (strategy === 'liquid') return byLiquidity.slice(0, count);
+  if (strategy === 'momentum') return byLiquidity.slice(0, count * 2).sort((a, b) => (b.changeBps || 0) - (a.changeBps || 0)).slice(0, count);
+
+  const sectors = new Map();
+  for (const quote of byLiquidity) if (!sectors.has(quote.sector)) sectors.set(quote.sector, quote);
+  const selected = [...sectors.values()].slice(0, count);
+  return selected.concat(byLiquidity.filter(quote => !selected.includes(quote)).slice(0, count - selected.length));
+}
+
 export function buildPaperPortfolio(quotes, budget, commissionBps, now = new Date().toISOString()) {
   const usable = quotes.filter(quote => Number.isSafeInteger(quote.price) && quote.price > 0 && Number.isSafeInteger(quote.lotSize) && quote.lotSize > 0);
   if (usable.length < 2) throw new Error('Недостаточно котировок MOEX для портфеля');

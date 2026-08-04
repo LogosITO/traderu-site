@@ -34,6 +34,12 @@
         <p>Виртуальные деньги. Реальные заявки не отправляются.</p>
       </div>
       <form id="botForm">
+        <label class="strategy-label" for="strategy">Стратегия</label>
+        <select id="strategy" name="strategy">
+          <option value="balanced">Баланс — разные отрасли</option>
+          <option value="liquid">Ликвидность — самые торгуемые</option>
+          <option value="momentum">Импульс — лидеры дня (высокий риск)</option>
+        </select>
         <label for="budget">Сумма, ₽</label>
         <div class="money-input"><input id="budget" name="budget" inputmode="decimal" value="100 000" required><span>₽</span></div>
         <label for="commission">Комиссия покупки</label>
@@ -45,7 +51,7 @@
 
     <section class="portfolio" id="portfolio" hidden>
       <div class="portfolio-head">
-        <div><p class="overline">PAPER-портфель</p><h2>Результат бота</h2><p id="portfolioDate"></p></div>
+        <div><p class="overline">PAPER-портфель</p><h2>Результат бота</h2><p id="strategyName"></p><p id="portfolioDate"></p></div>
         <div class="actions"><button id="refreshButton" type="button">Обновить цены</button><button class="quiet" id="resetButton" type="button">Начать заново</button></div>
       </div>
 
@@ -62,13 +68,13 @@
     </section>
 
     <section class="how">
-      <div><span>01</span><h3>Берём ликвидные бумаги</h3><p>SBER, LKOH, GAZP, YDEX, NVTK и ROSN.</p></div>
+      <div><span>01</span><h3>Выбираем стратегию</h3><p>Баланс по отраслям, максимальная ликвидность или дневной импульс.</p></div>
       <div><span>02</span><h3>Покупаем целые лоты</h3><p>Бюджет распределяется поровну, остаток остаётся деньгами.</p></div>
       <div><span>03</span><h3>Следим дальше</h3><p>Цены входа хранятся только в вашем браузере.</p></div>
     </section>
   </main>
 
   <footer><b>Market Sentinel RU</b><span>Не является инвестиционной рекомендацией.</span><span id="year"></span></footer>
-  <script type="module" src="app.js?v=2"></script>
+  <script type="module" src="app.js?v=3"></script>
 </body>
 </html>
