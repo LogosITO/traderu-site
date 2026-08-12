@@ -1,203 +1,203 @@
 {
-  "updatedAt": "2026-08-12T19:18:37.266Z",
+  "updatedAt": "2026-08-12T21:01:16.260Z",
   "quotes": [
     {
       "ticker": "SBER",
       "name": "Сбербанк",
       "sector": "Финансы",
       "lotSize": 1,
-      "price": 28407,
-      "liquidity": 6731757686,
-      "changeBps": -74
+      "price": 28399,
+      "liquidity": 6879978990,
+      "changeBps": -77
     },
     {
       "ticker": "VTBR",
       "name": "ВТБ ао",
       "sector": "Финансы",
       "lotSize": 1,
-      "price": 5703,
-      "liquidity": 7464471791,
-      "changeBps": -245
+      "price": 5697,
+      "liquidity": 7700629905,
+      "changeBps": -255
     },
     {
       "ticker": "MOEX",
       "name": "МосБиржа",
       "sector": "Финансы",
       "lotSize": 10,
-      "price": 15832,
-      "liquidity": 602846210,
-      "changeBps": -130
+      "price": 15789,
+      "liquidity": 623348582,
+      "changeBps": -156
     },
     {
       "ticker": "T",
       "name": "Т-Техно ао",
       "sector": "Финансы",
       "lotSize": 1,
-      "price": 27936,
-      "liquidity": 3950705207,
-      "changeBps": -140
+      "price": 27784,
+      "liquidity": 4352852775,
+      "changeBps": -193
     },
     {
       "ticker": "LKOH",
       "name": "ЛУКОЙЛ",
       "sector": "Энергетика",
       "lotSize": 1,
-      "price": 464200,
-      "liquidity": 2471568384,
-      "changeBps": -137
+      "price": 465700,
+      "liquidity": 2533552955,
+      "changeBps": -105
     },
     {
       "ticker": "GAZP",
       "name": "ГАЗПРОМ ао",
       "sector": "Энергетика",
       "lotSize": 10,
-      "price": 9184,
-      "liquidity": 5360831008,
-      "changeBps": -181
+      "price": 9169,
+      "liquidity": 5470836496,
+      "changeBps": -197
     },
     {
       "ticker": "ROSN",
       "name": "Роснефть",
       "sector": "Энергетика",
       "lotSize": 1,
-      "price": 34505,
-      "liquidity": 2599047388,
-      "changeBps": -217
+      "price": 34555,
+      "liquidity": 2692030088,
+      "changeBps": -203
     },
     {
       "ticker": "NVTK",
       "name": "Новатэк ао",
       "sector": "Энергетика",
       "lotSize": 1,
-      "price": 102110,
-      "liquidity": 2106836690,
-      "changeBps": -196
+      "price": 102190,
+      "liquidity": 2150019052,
+      "changeBps": -188
     },
     {
       "ticker": "SIBN",
       "name": "Газпрнефть",
       "sector": "Энергетика",
       "lotSize": 1,
-      "price": 49840,
-      "liquidity": 559982741,
-      "changeBps": -113
+      "price": 49505,
+      "liquidity": 606480806,
+      "changeBps": -180
     },
     {
       "ticker": "TRNFP",
       "name": "Транснф ап",
       "sector": "Энергетика",
       "lotSize": 1,
-      "price": 107680,
-      "liquidity": 1356923071,
-      "changeBps": -197
+      "price": 107480,
+      "liquidity": 1378800565,
+      "changeBps": -215
     },
     {
       "ticker": "GMKN",
       "name": "ГМКНорНик",
       "sector": "Материалы",
       "lotSize": 10,
-      "price": 12226,
-      "liquidity": 1991222398,
-      "changeBps": -213
+      "price": 12222,
+      "liquidity": 2054995790,
+      "changeBps": -216
     },
     {
       "ticker": "CHMF",
       "name": "СевСт-ао",
       "sector": "Материалы",
       "lotSize": 1,
-      "price": 66920,
-      "liquidity": 1264519477,
-      "changeBps": -251
+      "price": 66820,
+      "liquidity": 1295290057,
+      "changeBps": -265
     },
     {
       "ticker": "NLMK",
       "name": "НЛМК ао",
       "sector": "Материалы",
       "lotSize": 10,
-      "price": 7416,
-      "liquidity": 649963733,
-      "changeBps": -303
+      "price": 7356,
+      "liquidity": 704073977,
+      "changeBps": -382
     },
     {
       "ticker": "PLZL",
       "name": "Полюс",
       "sector": "Материалы",
       "lotSize": 1,
-      "price": 126880,
-      "liquidity": 3520850391,
-      "changeBps": -418
+      "price": 126100,
+      "liquidity": 3765587327,
+      "changeBps": -477
     },
     {
       "ticker": "PHOR",
       "name": "ФосАгро ао",
       "sector": "Материалы",
       "lotSize": 1,
-      "price": 559000,
-      "liquidity": 434692782,
-      "changeBps": -195
+      "price": 558600,
+      "liquidity": 469403330,
+      "changeBps": -202
     },
     {
       "ticker": "ALRS",
       "name": "АЛРОСА ао",
       "sector": "Материалы",
       "lotSize": 10,
-      "price": 2129,
-      "liquidity": 1799360252,
-      "changeBps": -453
+      "price": 2123,
+      "liquidity": 1873969788,
+      "changeBps": -480
     },
     {
       "ticker": "YDEX",
       "name": "ЯНДЕКС",
       "sector": "Технологии",
       "lotSize": 1,
-      "price": 396650,
-      "liquidity": 1903041467,
-      "changeBps": -104
+      "price": 396700,
+      "liquidity": 1949162521,
+      "changeBps": -102
     },
     {
       "ticker": "MTSS",
       "name": "МТС-ао",
       "sector": "Телеком",
       "lotSize": 10,
-      "price": 19455,
-      "liquidity": 630141442,
-      "changeBps": -59
+      "price": 19450,
+      "liquidity": 646894738,
+      "changeBps": -61
     },
     {
       "ticker": "RTKM",
       "name": "Ростел -ао",
       "sector": "Телеком",
       "lotSize": 10,
-      "price": 4405,
-      "liquidity": 695670515,
-      "changeBps": -117
+      "price": 4414,
+      "liquidity": 711761397,
+      "changeBps": -96
     },
     {
       "ticker": "X5",
       "name": "КЦ ИКС 5",
       "sector": "Потребительский сектор",
       "lotSize": 1,
-      "price": 210550,
-      "liquidity": 1120250194,
-      "changeBps": -73
+      "price": 210850,
+      "liquidity": 1189746070,
+      "changeBps": -59
     },
     {
       "ticker": "MGNT",
       "name": "Магнит ао",
       "sector": "Потребительский сектор",
       "lotSize": 1,
-      "price": 179350,
-      "liquidity": 960789430,
-      "changeBps": -381
+      "price": 178750,
+      "liquidity": 1034832918,
+      "changeBps": -413
     },
     {
       "ticker": "IRAO",
       "name": "ИнтерРАОао",
       "sector": "Электроэнергетика",
       "lotSize": 100,
-      "price": 262,
-      "liquidity": 285601104,
-      "changeBps": -147
+      "price": 260,
+      "liquidity": 307707503,
+      "changeBps": -222
     },
     {
       "ticker": "HYDR",
@@ -205,17 +205,17 @@
       "sector": "Электроэнергетика",
       "lotSize": 1000,
       "price": 34,
-      "liquidity": 64282629,
-      "changeBps": -323
+      "liquidity": 68077295,
+      "changeBps": -382
     },
     {
       "ticker": "AFLT",
       "name": "Аэрофлот",
       "sector": "Транспорт",
       "lotSize": 10,
-      "price": 3508,
-      "liquidity": 622828016,
-      "changeBps": -272
+      "price": 3500,
+      "liquidity": 658663549,
+      "changeBps": -294
     }
   ]
 }
